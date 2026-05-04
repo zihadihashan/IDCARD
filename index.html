@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>শিক্ষক আইডি কার্ড - মেরিট কেয়ার স্কুল</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #16a34a;
+    --green-light: #22c55e;
+    --green-dark: #14532d;
+    --gold: #f59e0b;
+    --white: #ffffff;
+    --gray: #f0fdf4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Hind Siliguri', sans-serif;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 50%, #86efac 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  h1.page-title {
+    text-align: center;
+    color: var(--green-dark);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--green);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .layout {
+    display: flex;
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* === FORM === */
+  .form-panel {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    width: 340px;
+    box-shadow: 0 10px 40px rgba(22,163,74,0.15);
+    border-top: 5px solid var(--green);
+    flex-shrink: 0;
+  }
+
+  .form-panel h2 {
+    color: var(--green-dark);
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #d1fae5;
+    border-radius: 10px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.9rem;
+    color: #1f2937;
+    background: #f0fdf4;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--green);
+    background: white;
+  }
+  .form-group textarea { resize: none; height: 56px; }
+
+  .photo-upload-area {
+    border: 2px dashed var(--green-light);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    background: #f0fdf4;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .photo-upload-area:hover { background: #dcfce7; }
+  .photo-upload-area input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    width: 100%; height: 100%;
+  }
+  .photo-preview {
+    width: 70px; height: 85px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin: 0 auto 6px;
+    display: block;
+    border: 2px solid var(--green);
+  }
+  .upload-hint { font-size: 0.78rem; color: #6b7280; }
+
+  .btn-generate {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(22,163,74,0.3);
+  }
+  .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(22,163,74,0.4); }
+  .btn-generate:active { transform: translateY(0); }
+
+  /* === PREVIEW AREA === */
+  .preview-panel {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .preview-panel h2 {
+    color: var(--green-dark);
+    font-size: 1.1rem;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* === ID CARD === */
+  #card-wrapper {
+    width: 320px;
+    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.2));
+    transition: transform 0.3s;
+  }
+  #card-wrapper:hover { transform: scale(1.02); }
+
+  .id-card {
+    width: 320px;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 3px solid var(--green);
+    position: relative;
+  }
+
+  /* Card Header */
+  .card-header {
+    background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);
+    padding: 12px 14px 10px;
+    text-align: center;
+    position: relative;
+  }
+  .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -12px; left: 0; right: 0;
+    height: 24px;
+    background: white;
+    border-radius: 50% 50% 0 0 / 100%;
+  }
+
+  .school-logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .logo-circle {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.6);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: white;
+  }
+  .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .school-name-block { text-align: left; }
+  .school-name-bn {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .school-name-managed {
+    font-size: 0.65rem;
+    color: #bbf7d0;
+    line-height: 1.2;
+  }
+  .card-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: #78350f;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  /* Card Body */
+  .card-body {
+    padding: 20px 16px 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .card-body::before {
+    content: '';
+    position: absolute;
+    top: -30px; left: 0; right: 0;
+    height: 30px;
+    background: white;
+  }
+
+  .photo-info-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .card-photo {
+    width: 82px; height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2.5px solid var(--green);
+    flex-shrink: 0;
+    background: #dcfce7;
+  }
+  .card-photo-placeholder {
+    width: 82px; height: 100px;
+    border-radius: 10px;
+    border: 2.5px dashed var(--green-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+    flex-shrink: 0;
+    color: #86efac;
+    font-size: 0.7rem;
+    gap: 4px;
+  }
+
+  .info-block { flex: 1; min-width: 0; }
+  .teacher-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #14532d;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .info-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+    align-items: flex-start;
+  }
+  .info-label {
+    font-size: 0.7rem;
+    color: #6b7280;
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 60px;
+    padding-top: 1px;
+  }
+  .info-value {
+    font-size: 0.75rem;
+    color: #1f2937;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  /* Divider */
+  .card-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #86efac, transparent);
+    margin: 10px 0;
+  }
+
+  /* Bottom info strip */
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .id-number-block { }
+  .id-number-label { font-size: 0.62rem; color: #6b7280; }
+  .id-number-value {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+  .sign-block { text-align: center; }
+  .sign-line {
+    width: 80px;
+    height: 1px;
+    background: #374151;
+    margin: 0 auto 3px;
+  }
+  .sign-label { font-size: 0.62rem; color: #374151; }
+
+  /* Card Footer */
+  .card-footer {
+    background: linear-gradient(135deg, #14532d, #166534);
+    padding: 7px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-address {
+    font-size: 0.62rem;
+    color: #86efac;
+    line-height: 1.4;
+  }
+  .footer-valid {
+    font-size: 0.62rem;
+    color: #bbf7d0;
+    text-align: right;
+  }
+  .footer-valid span {
+    display: block;
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+
+  /* Action buttons */
+  .action-btns {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-action {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-print {
+    background: var(--green-dark);
+    color: white;
+    box-shadow: 0 4px 12px rgba(20,83,45,0.3);
+  }
+  .btn-print:hover { background: #166534; transform: translateY(-1px); }
+  .btn-reset {
+    background: white;
+    color: var(--green-dark);
+    border: 2px solid var(--green-light);
+  }
+  .btn-reset:hover { background: #f0fdf4; }
+
+  .empty-state {
+    text-align: center;
+    color: #6b7280;
+    padding: 40px 20px;
+    font-size: 0.9rem;
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 10px; }
+
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; align-items: center; }
+    .form-panel { width: 100%; max-width: 380px; }
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: white; padding: 0; }
+    .form-panel, .preview-panel > h2, .action-btns, h1.page-title, .subtitle { display: none !important; }
+    .preview-panel { align-items: center; justify-content: center; min-height: 100vh; }
+    #card-wrapper { filter: none; transform: none !important; }
+    .id-card { border: 2px solid var(--green); }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">🏫 শিক্ষক আইডি কার্ড সিস্টেম</h1>
+<p class="subtitle">মেরিট কেয়ার স্কুল হাবিবপুর — আইডিয়াল লাইট হাউজ ফাউন্ডেশন</p>
+
+<div class="layout">
+  <!-- FORM -->
+  <div class="form-panel">
+    <h2>📝 তথ্য পূরণ করুন</h2>
+
+    <div class="form-group">
+      <label>📷 ছবি আপলোড করুন</label>
+      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+        <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
+        <img id="uploadPreview" class="photo-preview" src="" alt="" style="display:none">
+        <div id="uploadHint">
+          <div style="font-size:2rem">📷</div>
+          <div class="upload-hint">ছবি বেছে নিন<br>(ক্লিক করুন)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>👤 শিক্ষকের নাম (বাংলায়)</label>
+      <input type="text" id="teacherName" placeholder="যেমন: মো. আব্দুল করিম" oninput="updateCard()">
+    </div>
+
+    <div class="form-group">
+      <label>📚 পদবি / বিষয়</label>
+      <input type="text" id="designation" placeholder="যেমন: সহকারী শিক্ষক, গণিত" oninput="updateCard()">
+    </div>
+
+    <div class="form-group">
+      <label>🎓 শিক্ষাগত যোগ্যতা</label>
+      <input type="text" id="qualification" placeholder="যেমন: বি.এড, স্নাতক" oninput="updateCard()">
+    </div>
+
+    <div class="form-group">
+      <label>📞 মোবাইল নম্বর</label>
+      <input type="text" id="mobile" placeholder="যেমন: ০১৭XXXXXXXX" oninput="updateCard()">
+    </div>
+
+    <div class="form-group">
+      <label>🗓️ যোগদানের তারিখ</label>
+      <input type="date" id="joinDate" oninput="updateCard()">
+    </div>
+
+    <div class="form-group">
+      <label>🆔 আইডি নম্বর</label>
+      <input type="text" id="idNumber" placeholder="যেমন: MCS-2025-001" oninput="updateCard()">
+    </div>
+
+    <div class="form-group">
+      <label>📅 মেয়াদ শেষ</label>
+      <input type="text" id="validUntil" placeholder="যেমন: ডিসেম্বর ২০২৫" oninput="updateCard()">
+    </div>
+
+    <button class="btn-generate" onclick="generateCard()">✨ আইডি কার্ড তৈরি করুন</button>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-panel">
+    <h2>🪪 আইডি কার্ড প্রিভিউ</h2>
+
+    <div id="card-wrapper">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🪪</div>
+        তথ্য দিয়ে আইডি কার্ড তৈরি করুন
+      </div>
+      <div class="id-card" id="idCard" style="display:none">
+        <!-- HEADER -->
+        <div class="card-header">
+          <div class="school-logo-row">
+            <div class="logo-circle">
+              <img src="/mnt/user-data/uploads/mcs_JPG.jpg" alt="লোগো" onerror="this.style.display='none'">
+            </div>
+            <div class="school-name-block">
+              <div class="school-name-bn">মেরিট কেয়ার কিন্ডার গার্টেন স্কুল</div>
+              <div class="school-name-managed">পরিচালনায়: আইডিয়াল লাইট হাউজ ফাউন্ডেশন</div>
+            </div>
+          </div>
+          <div class="card-badge">শিক্ষক পরিচয়পত্র</div>
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body">
+          <div class="photo-info-row">
+            <div id="cardPhotoWrapper">
+              <div class="card-photo-placeholder" id="photoPlaceholder">
+                <span style="font-size:2rem">👤</span>
+                <span>ছবি নেই</span>
+              </div>
+            </div>
+            <div class="info-block">
+              <div class="teacher-name" id="cardName">—</div>
+              <div class="info-row">
+                <span class="info-label">পদবি:</span>
+                <span class="info-value" id="cardDesignation">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">যোগ্যতা:</span>
+                <span class="info-value" id="cardQualification">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">মোবাইল:</span>
+                <span class="info-value" id="cardMobile">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">যোগদান:</span>
+                <span class="info-value" id="cardJoinDate">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-divider"></div>
+
+          <div class="card-bottom">
+            <div class="id-number-block">
+              <div class="id-number-label">আইডি নম্বর</div>
+              <div class="id-number-value" id="cardIdNumber">MCS-0000</div>
+            </div>
+            <div class="sign-block">
+              <div class="sign-line"></div>
+              <div class="sign-label">প্রধান শিক্ষকের স্বাক্ষর</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="card-footer">
+          <div class="footer-address">
+            হাবিবপুর, বিরামপুর, দিনাজপুর<br>
+            📞 যোগাযোগ: স্কুল কার্যালয়
+          </div>
+          <div class="footer-valid">
+            মেয়াদ শেষ:<br>
+            <span id="cardValid">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btns" id="actionBtns" style="display:none">
+      <button class="btn-action btn-print" onclick="printCard()">🖨️ প্রিন্ট করুন</button>
+      <button class="btn-action btn-reset" onclick="resetForm()">🔄 নতুন কার্ড</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let photoDataUrl = null;
+
+function previewPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    photoDataUrl = e.target.result;
+    document.getElementById('uploadPreview').src = photoDataUrl;
+    document.getElementById('uploadPreview').style.display = 'block';
+    document.getElementById('uploadHint').style.display = 'none';
+    updateCard();
+  };
+  reader.readAsDataURL(file);
+}
+
+function banglaDate(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  const months = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন',
+                  'জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+  const year = d.getFullYear().toString().replace(/\d/g, c => '০১২৩৪৫৬৭৮৯'[c]);
+  const day = d.getDate().toString().replace(/\d/g, c => '০১২৩৪৫৬৭৮৯'[c]);
+  return `${day} ${months[d.getMonth()]}, ${year}`;
+}
+
+function updateCard() {
+  const name = document.getElementById('teacherName').value;
+  const desig = document.getElementById('designation').value;
+  const qual = document.getElementById('qualification').value;
+  const mobile = document.getElementById('mobile').value;
+  const joinDate = document.getElementById('joinDate').value;
+  const idNo = document.getElementById('idNumber').value;
+  const valid = document.getElementById('validUntil').value;
+
+  if (name || desig) {
+    showCard();
+    document.getElementById('cardName').textContent = name || '—';
+    document.getElementById('cardDesignation').textContent = desig || '—';
+    document.getElementById('cardQualification').textContent = qual || '—';
+    document.getElementById('cardMobile').textContent = mobile || '—';
+    document.getElementById('cardJoinDate').textContent = banglaDate(joinDate);
+    document.getElementById('cardIdNumber').textContent = idNo || 'MCS-0000';
+    document.getElementById('cardValid').textContent = valid || '—';
+
+    // Photo
+    const wrapper = document.getElementById('cardPhotoWrapper');
+    if (photoDataUrl) {
+      wrapper.innerHTML = `<img src="${photoDataUrl}" class="card-photo" alt="ছবি">`;
+    } else {
+      wrapper.innerHTML = `<div class="card-photo-placeholder" id="photoPlaceholder"><span style="font-size:2rem">👤</span><span style="font-size:0.65rem">ছবি নেই</span></div>`;
+    }
+  }
+}
+
+function showCard() {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('idCard').style.display = 'block';
+  document.getElementById('actionBtns').style.display = 'flex';
+}
+
+function generateCard() {
+  updateCard();
+  const name = document.getElementById('teacherName').value;
+  if (!name) {
+    alert('অনুগ্রহ করে শিক্ষকের নাম দিন।');
+    document.getElementById('teacherName').focus();
+    return;
+  }
+  document.getElementById('idCard').style.animation = 'none';
+  setTimeout(() => {
+    document.getElementById('idCard').style.animation = 'popIn 0.4s ease';
+  }, 10);
+}
+
+function printCard() {
+  window.print();
+}
+
+function resetForm() {
+  document.getElementById('teacherName').value = '';
+  document.getElementById('designation').value = '';
+  document.getElementById('qualification').value = '';
+  document.getElementById('mobile').value = '';
+  document.getElementById('joinDate').value = '';
+  document.getElementById('idNumber').value = '';
+  document.getElementById('validUntil').value = '';
+  document.getElementById('uploadPreview').style.display = 'none';
+  document.getElementById('uploadHint').style.display = 'block';
+  document.getElementById('photoInput').value = '';
+  photoDataUrl = null;
+  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('idCard').style.display = 'none';
+  document.getElementById('actionBtns').style.display = 'none';
+}
+
+// Logo embed as base64 from uploaded file
+(async function loadLogo() {
+  try {
+    const resp = await fetch('/mnt/user-data/uploads/mcs_JPG.jpg');
+    const blob = await resp.blob();
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.querySelectorAll('.logo-circle img').forEach(img => {
+        img.src = e.target.result;
+        img.style.display = 'block';
+      });
+    };
+    reader.readAsDataURL(blob);
+  } catch(e) {}
+})();
+</script>
+
+<style>
+@keyframes popIn {
+  0% { transform: scale(0.92); opacity: 0.5; }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
+</body>
+</html>
