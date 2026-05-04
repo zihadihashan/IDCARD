@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>শিক্ষক আইডি কার্ড — মেরিট কেয়ার স্কুল</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #16a34a;
+  --green2: #22c55e;
+  --green-dark: #14532d;
+  --green-mid: #166534;
+  --gold: #f59e0b;
+  --white: #ffffff;
+  --black: #0a0a0a;
+  --wave1: #15803d;
+  --wave2: #4ade80;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Hind Siliguri', sans-serif;
+  background: #f0fdf4;
+  min-height: 100vh;
+  padding: 20px 12px 40px;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.page-header h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  color: var(--green-dark);
+  letter-spacing: 1px;
+}
+.page-header p { font-size: 0.85rem; color: #6b7280; }
+
+/* ===== LAYOUT ===== */
+.main-layout {
+  display: flex;
+  gap: 28px;
+  max-width: 1060px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ===== FORM ===== */
+.form-panel {
+  background: white;
+  border-radius: 18px;
+  padding: 22px 20px;
+  width: 310px;
+  box-shadow: 0 8px 32px rgba(22,163,74,0.12);
+  border-top: 4px solid var(--green);
+  flex-shrink: 0;
+}
+.form-panel h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: var(--green-dark);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+.fg { margin-bottom: 12px; }
+.fg label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+.fg input, .fg select, .fg textarea {
+  width: 100%;
+  padding: 8px 11px;
+  border: 1.5px solid #d1fae5;
+  border-radius: 9px;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 0.88rem;
+  color: #111;
+  background: #f8fff9;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+.fg input:focus, .fg select:focus { border-color: var(--green); background: white; }
+.fg textarea { resize: none; height: 80px; line-height: 1.5; }
+.fg-row { display: flex; gap: 10px; }
+.fg-row .fg { flex: 1; }
+
+/* Photo upload */
+.photo-box {
+  width: 100%;
+  height: 110px;
+  border: 2px dashed var(--green2);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #f0fdf4;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+.photo-box:hover { background: #dcfce7; }
+.photo-box input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+.photo-box img.prev-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.photo-box .ph-hint { font-size: 0.75rem; color: #6b7280; text-align: center; }
+.ph-icon { font-size: 2rem; }
+
+/* Btn */
+.btn-gen {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(135deg, var(--green-dark), var(--green));
+  color: white;
+  border: none;
+  border-radius: 11px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  box-shadow: 0 4px 18px rgba(22,163,74,0.28);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btn-gen:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(22,163,74,0.38); }
+
+/* ===== CARD PREVIEW PANEL ===== */
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.preview-panel h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: var(--green-dark);
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+
+/* Both sides wrapper */
+.cards-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.card-side-label {
+  font-size: 0.72rem;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ===== THE ID CARD ===== */
+.id-card {
+  width: 300px;
+  height: 470px;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 16px 50px rgba(0,0,0,0.22);
+  flex-shrink: 0;
+  background: white;
+}
+
+/* === FRONT CARD === */
+.front-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lanyard hole */
+.lanyard-hole {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 18px;
+  background: #1a1a1a;
+  border-radius: 0 0 20px 20px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lanyard-ring {
+  width: 14px; height: 14px;
+  border: 2.5px solid #888;
+  border-radius: 50%;
+  margin-top: 3px;
+}
+
+/* Front header — dark top with wave */
+.front-top {
+  background: var(--black);
+  height: 85px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  flex-shrink: 0;
+}
+.front-top-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 2;
+  position: relative;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.front-top-title span { color: var(--green2); }
+
+/* Wavy SVG top decoration */
+.wave-top {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 30px;
+  overflow: hidden;
+}
+
+/* White body */
+.front-body {
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 18px 0;
+  position: relative;
+}
+
+/* Photo circle — overlapping the dark top */
+.photo-circle-wrap {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+.photo-circle-outer {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  padding: 3px;
+  box-shadow: 0 6px 24px rgba(22,163,74,0.4);
+}
+.photo-circle-inner {
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e5e7eb;
+  border: 3px solid white;
+}
+.photo-circle-inner img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem; background: #f0fdf4;
+}
+
+/* Name and role */
+.card-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--black);
+  text-align: center;
+  margin-top: 62px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.card-role-badge {
+  background: linear-gradient(135deg, var(--green-dark), var(--green));
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 16px;
+  border-radius: 20px;
+  margin: 5px 0 12px;
+  letter-spacing: 0.8px;
+}
+
+/* Info table */
+.info-table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #dcfce7;
+}
+.info-row-card {
+  display: flex;
+  border-bottom: 1px solid #f0fdf4;
+}
+.info-row-card:last-child { border-bottom: none; }
+.info-key {
+  background: #f0fdf4;
+  padding: 6px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #dcfce7;
+  letter-spacing: 0.3px;
+}
+.info-val {
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  color: #111;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* Blood group badge */
+.blood-val {
+  background: #fee2e2;
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 2px 10px;
+  border-radius: 6px;
+}
+
+/* Bottom wave green */
+.front-bottom-wave {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+}
+
+/* === BACK CARD === */
+.back-card {
+  background: white;
+}
+.back-top {
+  height: 90px;
+  background: var(--black);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+.back-logo-circle {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--green2);
+  background: white;
+  flex-shrink: 0;
+}
+.back-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+.back-school-name {
+  flex: 1;
+}
+.back-school-name .bsn-main {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+.back-school-name .bsn-main span { color: var(--green2); }
+.back-school-name .bsn-sub {
+  font-size: 0.6rem;
+  color: #86efac;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.back-body {
+  padding: 14px 16px;
+  flex: 1;
+}
+.back-body h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.88rem;
+  color: var(--green-dark);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  border-left: 3px solid var(--green);
+  padding-left: 8px;
+}
+.rules-list {
+  list-style: none;
+  padding: 0;
+}
+.rules-list li {
+  font-size: 0.7rem;
+  color: #374151;
+  line-height: 1.6;
+  padding: 4px 0;
+  border-bottom: 1px dashed #d1fae5;
+  display: flex;
+  gap: 6px;
+}
+.rules-list li:last-child { border-bottom: none; }
+.rule-num {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+}
+
+.back-footer {
+  background: var(--green-dark);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.sign-area { text-align: center; }
+.sign-line-back {
+  width: 90px;
+  height: 1px;
+  background: rgba(255,255,255,0.5);
+  margin: 0 auto 4px;
+}
+.sign-label-back { font-size: 0.6rem; color: #86efac; }
+.sign-name-back {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: white;
+  font-weight: 600;
+}
+.back-address {
+  font-size: 0.62rem;
+  color: #86efac;
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* Action buttons */
+.action-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-act {
+  padding: 9px 20px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-print { background: var(--green-dark); color: white; box-shadow: 0 4px 12px rgba(20,83,45,0.25); }
+.btn-print:hover { background: var(--green); }
+.btn-reset { background: white; color: var(--green-dark); border: 2px solid var(--green2); }
+.btn-reset:hover { background: #f0fdf4; }
+
+/* Empty state */
+.empty-box {
+  width: 300px;
+  height: 470px;
+  border-radius: 18px;
+  border: 2px dashed #86efac;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  gap: 8px;
+  background: #fafffe;
+  font-size: 0.85rem;
+}
+.empty-icon { font-size: 3rem; }
+
+/* Print */
+@media print {
+  body { background: white; padding: 0; }
+  .form-panel, .preview-panel h2, .action-row, .page-header, .card-side-label { display: none !important; }
+  .main-layout { justify-content: center; }
+  .cards-row { gap: 16px; }
+  .id-card { box-shadow: none; border: 1px solid #ccc; }
+  .empty-box { display: none !important; }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-appear { animation: cardIn 0.45s cubic-bezier(.22,.68,0,1.2) both; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>🪪 শিক্ষক আইডি কার্ড সিস্টেম</h1>
+  <p>মেরিট কেয়ার স্কুল হাবিবপুর — আইডিয়াল লাইট হাউজ ফাউন্ডেশন</p>
+</div>
+
+<div class="main-layout">
+
+  <!-- FORM -->
+  <div class="form-panel">
+    <h2>📋 শিক্ষকের তথ্য</h2>
+
+    <div class="fg">
+      <label>📷 পাসপোর্ট ছবি (ক্লিক করুন)</label>
+      <div class="photo-box" id="photoBox">
+        <input type="file" id="photoInput" accept="image/*" onchange="loadPhoto(event)">
+        <img class="prev-img" id="prevImg" src="" style="display:none">
+        <div id="phHint">
+          <div class="ph-icon">📷</div>
+          <div class="ph-hint">পাসপোর্ট সাইজ ছবি<br>আপলোড করুন</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>👤 শিক্ষকের নাম (বাংলা)</label>
+      <input type="text" id="f_name" placeholder="মো. আব্দুল করিম" oninput="liveUpdate()">
+    </div>
+
+    <div class="fg">
+      <label>📚 পদবি / বিষয়</label>
+      <input type="text" id="f_desig" placeholder="সহকারী শিক্ষক, বাংলা" oninput="liveUpdate()">
+    </div>
+
+    <div class="fg">
+      <label>🆔 আইডি নম্বর</label>
+      <input type="text" id="f_id" placeholder="MCS-2025-001" oninput="liveUpdate()">
+    </div>
+
+    <div class="fg-row">
+      <div class="fg">
+        <label>📞 মোবাইল</label>
+        <input type="text" id="f_phone" placeholder="০১৭XXXXXXXX" oninput="liveUpdate()">
+      </div>
+      <div class="fg">
+        <label>🩸 রক্তের গ্রুপ</label>
+        <select id="f_blood" onchange="liveUpdate()">
+          <option value="">—</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option>
+          <option>O+</option><option>O-</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>🗓️ যোগদানের তারিখ</label>
+      <input type="date" id="f_join" oninput="liveUpdate()">
+    </div>
+
+    <div class="fg">
+      <label>📅 মেয়াদ শেষ</label>
+      <input type="text" id="f_valid" placeholder="ডিসেম্বর ২০২৫" oninput="liveUpdate()">
+    </div>
+
+    <div class="fg">
+      <label>✍️ প্রধান শিক্ষকের নাম (স্বাক্ষরের জন্য)</label>
+      <input type="text" id="f_principal" placeholder="মো. রফিকুল ইসলাম" oninput="liveUpdate()">
+    </div>
+
+    <button class="btn-gen" onclick="generateCard()">✨ আইডি কার্ড তৈরি করুন</button>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-panel">
+    <h2>🪪 কার্ড প্রিভিউ (সামনে ও পিছনে)</h2>
+
+    <div class="cards-row">
+
+      <!-- FRONT -->
+      <div>
+        <div class="card-side-label">◀ সামনের দিক (FRONT)</div>
+        <div id="frontEmpty" class="empty-box">
+          <div class="empty-icon">🪪</div>
+          <div>তথ্য দিলে কার্ড<br>এখানে দেখাবে</div>
+        </div>
+        <div class="id-card front-card" id="frontCard" style="display:none">
+          <!-- Lanyard -->
+          <div class="lanyard-hole"><div class="lanyard-ring"></div></div>
+
+          <!-- Dark top -->
+          <div class="front-top">
+            <!-- wave shape -->
+            <svg style="position:absolute;bottom:0;left:0;right:0;width:100%;height:40px;" viewBox="0 0 300 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0,40 L0,20 Q50,0 100,15 Q150,30 200,12 Q250,-5 300,18 L300,40 Z" fill="white"/>
+            </svg>
+            <!-- green wave behind -->
+            <svg style="position:absolute;bottom:0;left:0;right:0;width:100%;height:50px;opacity:0.25;" viewBox="0 0 300 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0,50 L0,28 Q75,5 150,22 Q225,40 300,20 L300,50 Z" fill="#22c55e"/>
+            </svg>
+            <div class="front-top-title">MERIT<span> CARE</span></div>
+          </div>
+
+          <!-- Body -->
+          <div class="front-body">
+            <!-- Photo overlapping top -->
+            <div class="photo-circle-wrap">
+              <div class="photo-circle-outer">
+                <div class="photo-circle-inner" id="fcPhotoWrap">
+                  <div class="photo-placeholder">👤</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Name -->
+            <div class="card-name" id="fc_name">—</div>
+            <div class="card-role-badge" id="fc_desig">শিক্ষক</div>
+
+            <!-- Info table -->
+            <div class="info-table">
+              <div class="info-row-card">
+                <div class="info-key">ID NO</div>
+                <div class="info-val" id="fc_id">—</div>
+              </div>
+              <div class="info-row-card">
+                <div class="info-key">PHONE</div>
+                <div class="info-val" id="fc_phone">—</div>
+              </div>
+              <div class="info-row-card">
+                <div class="info-key">JOIN DATE</div>
+                <div class="info-val" id="fc_join">—</div>
+              </div>
+              <div class="info-row-card">
+                <div class="info-key">VALID</div>
+                <div class="info-val" id="fc_valid">—</div>
+              </div>
+              <div class="info-row-card">
+                <div class="info-key">BLOOD GRP</div>
+                <div class="info-val"><span class="blood-val" id="fc_blood">—</span></div>
+              </div>
+            </div>
+
+            <!-- bottom wave -->
+            <div class="front-bottom-wave">
+              <svg viewBox="0 0 300 50" preserveAspectRatio="none" width="300" height="50" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,50 L0,30 Q50,10 100,25 Q150,40 200,22 Q250,5 300,28 L300,50 Z" fill="#14532d" opacity="0.9"/>
+                <path d="M0,50 L0,38 Q75,18 150,32 Q225,46 300,36 L300,50 Z" fill="#16a34a" opacity="0.7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div>
+        <div class="card-side-label">পিছনের দিক (BACK) ▶</div>
+        <div id="backEmpty" class="empty-box">
+          <div class="empty-icon">🔄</div>
+          <div>পিছনের দিক<br>এখানে দেখাবে</div>
+        </div>
+        <div class="id-card back-card" id="backCard" style="display:none; flex-direction:column;">
+
+          <!-- Lanyard -->
+          <div class="lanyard-hole"><div class="lanyard-ring"></div></div>
+
+          <!-- Dark top -->
+          <div class="back-top" style="position:relative;">
+            <svg style="position:absolute;bottom:0;left:0;right:0;width:100%;height:30px;" viewBox="0 0 300 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0,30 L0,15 Q75,0 150,12 Q225,24 300,10 L300,30 Z" fill="white"/>
+            </svg>
+            <div class="back-logo-circle">
+              <img id="bk_logo" src="" alt="লোগো">
+            </div>
+            <div class="back-school-name">
+              <div class="bsn-main">MERIT <span>CARE</span><br>SCHOOL</div>
+              <div class="bsn-sub">হাবিবপুর, বিরামপুর, দিনাজপুর<br>আইডিয়াল লাইট হাউজ ফাউন্ডেশন</div>
+            </div>
+          </div>
+
+          <!-- Rules -->
+          <div class="back-body" style="flex:1; overflow:hidden;">
+            <h3>📌 নিয়মাবলী</h3>
+            <ul class="rules-list">
+              <li><span class="rule-num">১.</span> এই কার্ড সব সময় সাথে রাখা এবং দৃশ্যমান স্থানে পরিধান করা বাধ্যতামূলক।</li>
+              <li><span class="rule-num">২.</span> এই কার্ড শুধুমাত্র নিজের ব্যবহারের জন্য। অন্যকে ব্যবহার করতে দেওয়া যাবে না।</li>
+              <li><span class="rule-num">৩.</span> কার্ড হারিয়ে গেলে অবিলম্বে কর্তৃপক্ষকে জানাতে হবে।</li>
+              <li><span class="rule-num">৪.</span> কার্যালয়ে সেবাদানের সময় কার্ড প্রদর্শন নির্দেশনা মানতে হবে।</li>
+              <li><span class="rule-num">৫.</span> কার্ড অন্য কাউকে হস্তান্তর করা যাবে না।</li>
+              <li><span class="rule-num">৬.</span> মেয়াদ উত্তীর্ণ কার্ড ব্যবহার বৈধ নয়। নবায়ন করতে হবে।</li>
+            </ul>
+          </div>
+
+          <!-- Footer -->
+          <div class="back-footer">
+            <div class="sign-area">
+              <div class="sign-name-back" id="bk_principal">প্রধান শিক্ষক</div>
+              <div class="sign-line-back"></div>
+              <div class="sign-label-back">প্রধান শিক্ষকের স্বাক্ষর</div>
+            </div>
+            <div class="back-address">
+              হাবিবপুর, বিরামপুর<br>
+              দিনাজপুর, বাংলাদেশ<br>
+              <span style="color:var(--gold);font-weight:700" id="bk_valid_foot">মেয়াদ: —</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="action-row" id="actionRow" style="display:none">
+      <button class="btn-act btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
+      <button class="btn-act btn-reset" onclick="resetAll()">🔄 নতুন কার্ড</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let photoDataUrl = null;
+let logoDataUrl = null;
+
+// Load school logo
+(async function() {
+  try {
+    const r = await fetch('/mnt/user-data/uploads/mcs_JPG.jpg');
+    const b = await r.blob();
+    const rd = new FileReader();
+    rd.onload = e => {
+      logoDataUrl = e.target.result;
+      document.querySelectorAll('#bk_logo').forEach(i => i.src = logoDataUrl);
+    };
+    rd.readAsDataURL(b);
+  } catch(e) {}
+})();
+
+function loadPhoto(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    photoDataUrl = e.target.result;
+    document.getElementById('prevImg').src = photoDataUrl;
+    document.getElementById('prevImg').style.display = 'block';
+    document.getElementById('phHint').style.display = 'none';
+    liveUpdate();
+  };
+  reader.readAsDataURL(file);
+}
+
+function banglaDate(str) {
+  if (!str) return '—';
+  const d = new Date(str);
+  const m = ['জানু','ফেব্রু','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টে','অক্টো','নভে','ডিসে'];
+  const toBn = s => s.toString().replace(/\d/g, c => '০১২৩৪৫৬৭৮৯'[c]);
+  return `${toBn(d.getDate())} ${m[d.getMonth()]}, ${toBn(d.getFullYear())}`;
+}
+
+function liveUpdate() {
+  const name = document.getElementById('f_name').value.trim();
+  const desig = document.getElementById('f_desig').value.trim();
+  const idNo = document.getElementById('f_id').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
+  const blood = document.getElementById('f_blood').value;
+  const join = document.getElementById('f_join').value;
+  const valid = document.getElementById('f_valid').value.trim();
+  const principal = document.getElementById('f_principal').value.trim();
+
+  if (!name && !desig) return;
+
+  // Ensure cards visible
+  document.getElementById('frontEmpty').style.display = 'none';
+  document.getElementById('backEmpty').style.display = 'none';
+  document.getElementById('frontCard').style.display = 'flex';
+  document.getElementById('backCard').style.display = 'flex';
+  document.getElementById('actionRow').style.display = 'flex';
+
+  // Front
+  document.getElementById('fc_name').textContent = name || '—';
+  document.getElementById('fc_desig').textContent = desig || 'শিক্ষক';
+  document.getElementById('fc_id').textContent = idNo || '—';
+  document.getElementById('fc_phone').textContent = phone || '—';
+  document.getElementById('fc_join').textContent = banglaDate(join);
+  document.getElementById('fc_valid').textContent = valid || '—';
+  document.getElementById('fc_blood').textContent = blood || '—';
+
+  // Photo
+  const wrap = document.getElementById('fcPhotoWrap');
+  if (photoDataUrl) {
+    wrap.innerHTML = `<img src="${photoDataUrl}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">`;
+  } else {
+    wrap.innerHTML = `<div class="photo-placeholder">👤</div>`;
+  }
+
+  // Back
+  document.getElementById('bk_principal').textContent = principal || 'প্রধান শিক্ষক';
+  document.getElementById('bk_valid_foot').textContent = 'মেয়াদ: ' + (valid || '—');
+  if (logoDataUrl) document.getElementById('bk_logo').src = logoDataUrl;
+}
+
+function generateCard() {
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) {
+    alert('অনুগ্রহ করে শিক্ষকের নাম লিখুন।');
+    document.getElementById('f_name').focus();
+    return;
+  }
+  liveUpdate();
+  document.getElementById('frontCard').classList.remove('card-appear');
+  document.getElementById('backCard').classList.remove('card-appear');
+  void document.getElementById('frontCard').offsetWidth;
+  document.getElementById('frontCard').classList.add('card-appear');
+  document.getElementById('backCard').classList.add('card-appear');
+}
+
+function resetAll() {
+  ['f_name','f_desig','f_id','f_phone','f_valid','f_principal'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f_blood').value = '';
+  document.getElementById('f_join').value = '';
+  document.getElementById('photoInput').value = '';
+  document.getElementById('prevImg').style.display = 'none';
+  document.getElementById('phHint').style.display = 'flex';
+  photoDataUrl = null;
+  document.getElementById('frontEmpty').style.display = 'flex';
+  document.getElementById('backEmpty').style.display = 'flex';
+  document.getElementById('frontCard').style.display = 'none';
+  document.getElementById('backCard').style.display = 'none';
+  document.getElementById('actionRow').style.display = 'none';
+}
+</script>
+</body>
+</html>
